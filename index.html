@@ -15,18 +15,18 @@
         body {
             background: linear-gradient(145deg, #f0f4fa 0%, #dce3ec 100%);
             font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
-            padding: 1.2rem 1rem 2rem;
+            padding: 1rem 1rem 2rem;
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;    /* 改为flex-start，让卡片靠上，实现置顶效果 */
             justify-content: center;
         }
 
-        /* 主卡片 */
+        /* 主卡片 - 置顶视觉，靠近顶部 */
         .card {
             max-width: 560px;
             width: 100%;
-            margin: 0 auto;
+            margin: 0 auto 1.5rem;
             background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(0px);
             border-radius: 2.5rem;
@@ -38,7 +38,7 @@
         /* 头部 */
         .header {
             background: #ffffff;
-            padding: 1.5rem 1.5rem 0.6rem 1.5rem;
+            padding: 1.2rem 1.5rem 0.5rem 1.5rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
@@ -103,11 +103,22 @@
 
         /* 内容区 */
         .content {
-            padding: 1.6rem 1.3rem 1.8rem;
+            padding: 1.2rem 1.3rem 1.5rem;
+        }
+
+        /* 置顶结果区 - 重点突出，置顶显示 */
+        .result-top-area {
+            background: linear-gradient(135deg, #eef3ff 0%, #e4eefb 100%);
+            border-radius: 1.8rem;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.6rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), inset 0 1px 0 rgba(255,255,255,0.8);
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
         .input-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.3rem;
         }
 
         .input-label {
@@ -173,47 +184,64 @@
             font-weight: 500;
         }
 
-        /* 结果区域 */
-        .result-area {
-            background: #f0f5fe;
-            border-radius: 1.8rem;
-            padding: 1.2rem 1.2rem;
-            margin: 1.2rem 0 0.8rem;
-            text-align: center;
+        /* 归零按钮样式 */
+        .reset-btn {
+            background: #f0f2f6;
+            border: 1px solid #dce3ec;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 2.2rem;
+            font-size: 0.9rem;
+            font-weight: 590;
+            color: #3a5670;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
             transition: all 0.2s;
+            margin-top: 0.6rem;
+            margin-bottom: 0.2rem;
         }
 
+        .reset-btn:active {
+            transform: scale(0.97);
+            background: #e4e9f0;
+        }
+
+        /* 原有的结果内样式复用 */
         .result-label {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #4f6f8f;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .result-value {
-            font-size: 2.2rem;
-            font-weight: 700;
+            font-size: 2.1rem;
+            font-weight: 750;
             color: #1a3f60;
             margin: 0.2rem 0 0.2rem;
             word-break: break-word;
+            line-height: 1.2;
         }
 
         .discount-saved {
-            background: #e5f0e8;
+            background: rgba(30, 70, 60, 0.08);
             border-radius: 2rem;
-            padding: 0.7rem 1rem;
-            margin-top: 0.8rem;
+            padding: 0.6rem 1rem;
+            margin-top: 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             color: #1a5a3c;
         }
 
         .saved-amount {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #137a4b;
         }
@@ -222,33 +250,9 @@
             font-size: 0.7rem;
             color: #7c8ba0;
             text-align: center;
-            margin-top: 1rem;
-            border-top: 1px solid #eef2f8;
-            padding-top: 0.9rem;
-        }
-
-        button.calc-btn {
-            background: #1f3b62;
-            width: 100%;
-            border: none;
-            padding: 0.9rem;
-            border-radius: 2.5rem;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
             margin-top: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        button.calc-btn:active {
-            transform: scale(0.97);
-            background: #14304e;
+            border-top: 1px solid #eef2f8;
+            padding-top: 0.7rem;
         }
 
         .error-msg {
@@ -256,8 +260,18 @@
             border-radius: 1.5rem;
             padding: 0.8rem;
             text-align: center;
-            margin-top: 0.8rem;
+            margin-top: 0.2rem;
             color: #d14b4b;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .neutral-tip {
+            background: #f0f4fa;
+            border-radius: 1.5rem;
+            padding: 0.9rem;
+            text-align: center;
+            color: #567190;
             font-size: 0.8rem;
             font-weight: 500;
         }
@@ -266,7 +280,7 @@
             font-size: 0.68rem;
             text-align: center;
             color: #8f9bb3;
-            margin-top: 1rem;
+            margin-top: 0.2rem;
             padding-bottom: 0.8rem;
         }
     </style>
@@ -287,14 +301,14 @@
     </div>
 
     <div class="content" id="appContent">
-        <!-- 动态内容由js渲染 -->
+        <!-- 动态内容由js渲染，包含置顶结果区 + 输入框组 + 归零按钮 -->
     </div>
-    <footer>三种计算模式 · 精准算出优惠金额与折扣</footer>
+    <footer>自动计算 · 结果置顶 · 一键归零</footer>
 </div>
 
 <script>
     // 当前激活的模式: 'mode1' 原价+折扣 -> 到手价; 'mode2' 到手价+折扣 -> 原价; 'mode3' 原价+到手价 -> 折扣%
-    let currentMode = 'mode2';   // 默认选中“到手价+折扣”（与原版默认一致）
+    let currentMode = 'mode2';   // 默认选中“到手价+折扣”
 
     const contentContainer = document.getElementById('appContent');
 
@@ -304,20 +318,14 @@
         return Number(value).toFixed(2);
     }
 
-    // 格式化折扣百分比（保留一位小数，如果整数则显示 .0 或直接整数风格）
+    // 格式化折扣百分比（保留一位小数）
     function formatPercent(value) {
         if (isNaN(value) || value === null || value === undefined) return '0.0';
         let num = Number(value);
-        // 保留一位小数，避免过长
-        let fixed = num.toFixed(1);
-        // 去掉多余的 .0 如果希望更简洁，但保留一位更专业
-        return fixed;
+        return num.toFixed(1);
     }
 
-    // 核心计算逻辑 支持三种模式
-    // mode1: 原价(originalPrice) + 折扣百分比(discountPercent) -> 到手价 + 优惠金额
-    // mode2: 到手价(finalPrice) + 折扣百分比(discountPercent) -> 原价 + 优惠金额
-    // mode3: 原价(originalPrice) + 到手价(finalPrice) -> 优惠金额 + 折扣百分比
+    // 核心计算逻辑 支持三种模式 (纯函数)
     function calculate(mode, originalPrice, finalPrice, discountPercent) {
         let result = {
             original: null,
@@ -351,7 +359,7 @@
             result.original = Number(original.toFixed(2));
             result.final = Number(finalCalculated.toFixed(2));
             result.saved = Number(savedCalculated.toFixed(2));
-            result.discountPercent = discount; // 保留输入的折扣
+            result.discountPercent = discount;
         } 
         else if (mode === 'mode2') {
             let final = parseFloat(finalPrice);
@@ -404,7 +412,6 @@
             }
             const savedCalculated = original - final;
             let discountCalc = (savedCalculated / original) * 100;
-            // 防止浮点溢出
             if (discountCalc > 100) discountCalc = 100;
             if (discountCalc < 0) discountCalc = 0;
             result.original = Number(original.toFixed(2));
@@ -413,7 +420,6 @@
             result.discountPercent = discountCalc;
         }
         
-        // 金额四舍五入已处理
         if (result.original !== null) result.original = Number(result.original.toFixed(2));
         if (result.final !== null) result.final = Number(result.final.toFixed(2));
         if (result.saved !== null) result.saved = Number(result.saved.toFixed(2));
@@ -422,13 +428,272 @@
         return result;
     }
 
-    // 渲染界面 (完全清空历史输入值，模式切换干净)
-    function render() {
-        let html = '';
+    // 展示结果到置顶区域 (自动更新)
+    function displayResultToTop(result, mode) {
+        const topResultContainer = document.getElementById('topResultContainer');
+        if (!topResultContainer) return;
+
+        // 处理无有效输入的友好提示
+        if (result && result.error) {
+            topResultContainer.innerHTML = `
+                <div class="error-msg">
+                    ⚠️ ${escapeHtml(result.error)}
+                </div>
+            `;
+            return;
+        }
+        
+        // 如果结果为空或者关键字段缺失 (无错误但数据不完整可能是初始状态)
+        if (!result || result.original === null || result.final === null) {
+            topResultContainer.innerHTML = `
+                <div class="neutral-tip">
+                    ✨ 输入数字，自动计算优惠金额与折扣
+                </div>
+            `;
+            return;
+        }
+        
+        const originalPrice = result.original;
+        const finalPrice = result.final;
+        const savedAmount = result.saved;
+        const discountPercent = result.discountPercent;
+        
+        // 根据不同模式展示略有差异但保持信息完整
+        if (mode === 'mode1') {
+            const finalFormatted = formatMoney(finalPrice);
+            const savedFormatted = formatMoney(savedAmount);
+            const discPercent = (discountPercent !== null && discountPercent !== undefined) ? formatPercent(discountPercent) : '?';
+            const html = `
+                <div class="result-area" style="background: transparent; padding: 0;">
+                    <div class="result-label">💰 优惠后到手价</div>
+                    <div class="result-value">¥ ${finalFormatted}</div>
+                    <div class="discount-saved">
+                        <span>🎉 共优惠金额</span>
+                        <span class="saved-amount">¥ ${savedFormatted}</span>
+                    </div>
+                    <div style="font-size:0.7rem; margin-top:8px; color:#407090;">
+                        原价 ¥ ${formatMoney(originalPrice)} &nbsp;→&nbsp; 到手 ¥ ${finalFormatted}
+                    </div>
+                    <div class="info-note" style="margin-top: 6px;">
+                        💡 立减 ${discPercent}% · 省了 ¥ ${savedFormatted}
+                    </div>
+                </div>
+            `;
+            topResultContainer.innerHTML = html;
+        } 
+        else if (mode === 'mode2') {
+            const originalFormatted = formatMoney(originalPrice);
+            const savedFormatted = formatMoney(savedAmount);
+            const discPercent = (discountPercent !== null && discountPercent !== undefined) ? formatPercent(discountPercent) : '?';
+            const html = `
+                <div class="result-area" style="background: transparent; padding: 0;">
+                    <div class="result-label">🏷️ 商品原价 (折前)</div>
+                    <div class="result-value">¥ ${originalFormatted}</div>
+                    <div class="discount-saved">
+                        <span>🎉 共优惠金额</span>
+                        <span class="saved-amount">¥ ${savedFormatted}</span>
+                    </div>
+                    <div style="font-size:0.7rem; margin-top:8px; color:#407090;">
+                        原价 ¥ ${originalFormatted} &nbsp;→&nbsp; 到手 ¥ ${formatMoney(finalPrice)}
+                    </div>
+                    <div class="info-note" style="margin-top: 6px;">
+                        💡 立减 ${discPercent}% · 省了 ¥ ${savedFormatted}
+                    </div>
+                </div>
+            `;
+            topResultContainer.innerHTML = html;
+        }
+        else if (mode === 'mode3') {
+            const discPercentFormatted = formatPercent(discountPercent);
+            const savedFormatted = formatMoney(savedAmount);
+            const originalFormatted = formatMoney(originalPrice);
+            const finalFormatted = formatMoney(finalPrice);
+            const discountValue = discountPercent;
+            const finalDiscount = (100 - discountValue).toFixed(1);
+            const html = `
+                <div class="result-area" style="background: transparent; padding: 0;">
+                    <div class="result-label">🎯 实际立减折扣</div>
+                    <div class="result-value">${discPercentFormatted}%</div>
+                    <div class="discount-saved">
+                        <span>💸 共优惠金额</span>
+                        <span class="saved-amount">¥ ${savedFormatted}</span>
+                    </div>
+                    <div style="font-size:0.75rem; margin-top:8px; background: rgba(0,0,0,0.03); padding: 5px 12px; border-radius: 30px; display: inline-block; width: auto;">
+                        原价 ¥ ${originalFormatted} → 到手 ¥ ${finalFormatted}
+                    </div>
+                    <div class="info-note" style="margin-top: 8px;">
+                        📐 折扣公式: (原价-到手价)÷原价×100% = ${discPercentFormatted}% <br>
+                        🎁 相当于打了 ${finalDiscount} 折，节省 ¥ ${savedFormatted}
+                    </div>
+                </div>
+            `;
+            topResultContainer.innerHTML = html;
+        }
+    }
+    
+    // 获取当前模式下输入值并执行自动计算
+    function performAutoCalculation() {
+        // 根据当前模式获取对应的输入值
+        let resultObj = null;
+        let hasValidInput = false;
         
         if (currentMode === 'mode1') {
-            // 模式1：已知原价 + 折扣百分比 = 到手价
-            html = `
+            const originalElem = document.getElementById('originalInput');
+            const discountElem = document.getElementById('discountInput');
+            if (originalElem && discountElem) {
+                const origVal = originalElem.value.trim();
+                const discVal = discountElem.value.trim();
+                // 如果两者都非空，尝试计算，否则返回提示
+                if (origVal !== '' && discVal !== '') {
+                    hasValidInput = true;
+                    resultObj = calculate('mode1', origVal, null, discVal);
+                } else {
+                    // 显示等待提示
+                    resultObj = { error: null, original: null, final: null, saved: null };
+                }
+            } else {
+                resultObj = { error: null, original: null, final: null };
+            }
+        } 
+        else if (currentMode === 'mode2') {
+            const finalElem = document.getElementById('finalInput');
+            const discountElem = document.getElementById('discountInput');
+            if (finalElem && discountElem) {
+                const finalVal = finalElem.value.trim();
+                const discVal = discountElem.value.trim();
+                if (finalVal !== '' && discVal !== '') {
+                    hasValidInput = true;
+                    resultObj = calculate('mode2', null, finalVal, discVal);
+                } else {
+                    resultObj = { error: null, original: null, final: null, saved: null };
+                }
+            } else {
+                resultObj = { error: null, original: null, final: null };
+            }
+        }
+        else if (currentMode === 'mode3') {
+            const originalElem = document.getElementById('originalInput');
+            const finalElem = document.getElementById('finalInput');
+            if (originalElem && finalElem) {
+                const origVal = originalElem.value.trim();
+                const finalVal = finalElem.value.trim();
+                if (origVal !== '' && finalVal !== '') {
+                    hasValidInput = true;
+                    resultObj = calculate('mode3', origVal, finalVal, null);
+                } else {
+                    resultObj = { error: null, original: null, final: null, saved: null };
+                }
+            } else {
+                resultObj = { error: null, original: null, final: null };
+            }
+        }
+        
+        // 展示结果到置顶区域
+        if (resultObj) {
+            // 如果没有有效输入但也没有错误信息，显示待输入提示
+            if (!hasValidInput && (!resultObj.error || resultObj.error === null)) {
+                const topContainer = document.getElementById('topResultContainer');
+                if (topContainer) {
+                    topContainer.innerHTML = `<div class="neutral-tip">📝 请输入完整信息，自动计算优惠结果</div>`;
+                }
+                return;
+            }
+            // 有错误或有正确结果
+            if (resultObj.error) {
+                displayResultToTop(resultObj, currentMode);
+            } else if (resultObj.original !== null && resultObj.final !== null) {
+                displayResultToTop(resultObj, currentMode);
+            } else if (!hasValidInput) {
+                // 没有填写完整不显示错误
+                const topContainer = document.getElementById('topResultContainer');
+                if (topContainer) topContainer.innerHTML = `<div class="neutral-tip">📝 输入数字，自动计算优惠金额与折扣</div>`;
+            } else {
+                // 其他意外情况
+                displayResultToTop({ error: null, original: null, final: null }, currentMode);
+            }
+        } else {
+            const topContainer = document.getElementById('topResultContainer');
+            if (topContainer) topContainer.innerHTML = `<div class="neutral-tip">✨ 自动计算模式已开启</div>`;
+        }
+    }
+    
+    // 归零功能: 清空当前所有输入框，然后自动计算结果（显示等待提示）
+    function resetAllInputs() {
+        if (currentMode === 'mode1') {
+            const origInput = document.getElementById('originalInput');
+            const discInput = document.getElementById('discountInput');
+            if (origInput) origInput.value = '';
+            if (discInput) discInput.value = '';
+        } 
+        else if (currentMode === 'mode2') {
+            const finalInput = document.getElementById('finalInput');
+            const discInput = document.getElementById('discountInput');
+            if (finalInput) finalInput.value = '';
+            if (discInput) discInput.value = '';
+        }
+        else if (currentMode === 'mode3') {
+            const origInput = document.getElementById('originalInput');
+            const finalInput = document.getElementById('finalInput');
+            if (origInput) origInput.value = '';
+            if (finalInput) finalInput.value = '';
+        }
+        // 清空后执行自动计算，展示等待提示
+        performAutoCalculation();
+    }
+    
+    // 为当前模式下的输入框绑定 input 事件 (自动计算)
+    function bindAutoInputEvents() {
+        if (currentMode === 'mode1') {
+            const origEl = document.getElementById('originalInput');
+            const discEl = document.getElementById('discountInput');
+            if (origEl) origEl.addEventListener('input', () => performAutoCalculation());
+            if (discEl) discEl.addEventListener('input', () => performAutoCalculation());
+        } 
+        else if (currentMode === 'mode2') {
+            const finalEl = document.getElementById('finalInput');
+            const discEl = document.getElementById('discountInput');
+            if (finalEl) finalEl.addEventListener('input', () => performAutoCalculation());
+            if (discEl) discEl.addEventListener('input', () => performAutoCalculation());
+        }
+        else if (currentMode === 'mode3') {
+            const origEl = document.getElementById('originalInput');
+            const finalEl = document.getElementById('finalInput');
+            if (origEl) origEl.addEventListener('input', () => performAutoCalculation());
+            if (finalEl) finalEl.addEventListener('input', () => performAutoCalculation());
+        }
+    }
+    
+    // 绑定归零按钮事件
+    function bindResetEvent() {
+        const resetBtn = document.getElementById('resetButtonGlobal');
+        if (resetBtn) {
+            // 移除旧事件避免重复绑定
+            const newBtn = resetBtn.cloneNode(true);
+            resetBtn.parentNode?.replaceChild(newBtn, resetBtn);
+            newBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                resetAllInputs();
+            });
+        }
+    }
+
+    // escapeHtml 防XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // 渲染界面：置顶结果区 + 输入框组 + 归零按钮 (实时计算)
+    function render() {
+        let inputHtml = '';
+        
+        if (currentMode === 'mode1') {
+            inputHtml = `
                 <div class="input-group">
                     <div class="input-label">
                         <span><span class="label-icon">🏷️</span> 商品原价</span>
@@ -449,13 +714,10 @@
                         <span class="percent-symbol">%</span>
                     </div>
                 </div>
-                <button class="calc-btn" id="actionBtn">✨ 计算到手价 & 优惠</button>
-                <div id="resultContainer"></div>
             `;
         } 
         else if (currentMode === 'mode2') {
-            // 模式2：已知到手价 + 折扣百分比 = 原价
-            html = `
+            inputHtml = `
                 <div class="input-group">
                     <div class="input-label">
                         <span><span class="label-icon">🛒</span> 到手价 (折后价)</span>
@@ -476,13 +738,10 @@
                         <span class="percent-symbol">%</span>
                     </div>
                 </div>
-                <button class="calc-btn" id="actionBtn">🔍 计算原价 & 优惠</button>
-                <div id="resultContainer"></div>
             `;
         } 
         else if (currentMode === 'mode3') {
-            // 模式3：已知原价 + 到手价 → 实际折扣百分比 & 优惠金额
-            html = `
+            inputHtml = `
                 <div class="input-group">
                     <div class="input-label">
                         <span><span class="label-icon">🏷️</span> 商品原价</span>
@@ -503,185 +762,48 @@
                         <input type="number" id="finalInput" class="input-field" placeholder="例如 209.30" step="any" value="">
                     </div>
                 </div>
-                <button class="calc-btn" id="actionBtn">📊 计算折扣 & 省了多少钱</button>
-                <div id="resultContainer"></div>
             `;
         }
         
-        contentContainer.innerHTML = html;
+        // 完整布局：置顶结果区 + 输入组 + 归零按钮
+        const fullHtml = `
+            <div id="topResultContainer" class="result-top-area">
+                <div class="neutral-tip">✨ 输入数字，自动计算优惠金额与折扣</div>
+            </div>
+            ${inputHtml}
+            <button id="resetButtonGlobal" class="reset-btn">
+                🔄 一键归零 / 清空所有
+            </button>
+        `;
         
-        // 绑定计算按钮事件
-        const btn = document.getElementById('actionBtn');
-        if (btn) {
-            btn.addEventListener('click', () => {
-                performCalculation();
-            });
-        }
+        contentContainer.innerHTML = fullHtml;
+        
+        // 绑定输入自动计算事件
+        bindAutoInputEvents();
+        // 绑定归零按钮事件
+        bindResetEvent();
+        
+        // 如果有任何预置值？没有预置数值，但是执行一次初始自动计算展示提示
+        performAutoCalculation();
     }
     
-    // 执行当前模式的计算并渲染结果区
-    function performCalculation() {
-        if (currentMode === 'mode1') {
-            const originalInputElem = document.getElementById('originalInput');
-            const discountInputElem = document.getElementById('discountInput');
-            if (!originalInputElem || !discountInputElem) return;
-            
-            const originalVal = originalInputElem.value;
-            const discountVal = discountInputElem.value;
-            
-            const result = calculate('mode1', originalVal, null, discountVal);
-            displayResult(result, 'mode1');
-        } 
-        else if (currentMode === 'mode2') {
-            const finalInputElem = document.getElementById('finalInput');
-            const discountInputElem = document.getElementById('discountInput');
-            if (!finalInputElem || !discountInputElem) return;
-            
-            const finalVal = finalInputElem.value;
-            const discountVal = discountInputElem.value;
-            
-            const result = calculate('mode2', null, finalVal, discountVal);
-            displayResult(result, 'mode2');
-        }
-        else if (currentMode === 'mode3') {
-            const originalInputElem = document.getElementById('originalInput');
-            const finalInputElem = document.getElementById('finalInput');
-            if (!originalInputElem || !finalInputElem) return;
-            
-            const originalVal = originalInputElem.value;
-            const finalVal = finalInputElem.value;
-            
-            const result = calculate('mode3', originalVal, finalVal, null);
-            displayResult(result, 'mode3');
-        }
-    }
-    
-    // 展示结果 (三种模式统一入口)
-    function displayResult(result, mode) {
-        const resultContainer = document.getElementById('resultContainer');
-        if (!resultContainer) return;
-        
-        if (result.error) {
-            resultContainer.innerHTML = `<div class="error-msg">⚠️ ${escapeHtml(result.error)}</div>`;
-            return;
-        }
-        
-        const originalPrice = result.original;
-        const finalPrice = result.final;
-        const savedAmount = result.saved;
-        const discountPercent = result.discountPercent;
-        
-        if (originalPrice === null || finalPrice === null || savedAmount === null) {
-            resultContainer.innerHTML = `<div class="error-msg">计算异常，请检查输入数值</div>`;
-            return;
-        }
-        
-        // 针对不同模式，主要展示重点不同
-        if (mode === 'mode1') {
-            // 展示到手价为大字
-            const finalFormatted = formatMoney(finalPrice);
-            const savedFormatted = formatMoney(savedAmount);
-            const discPercent = (discountPercent !== null && discountPercent !== undefined) ? formatPercent(discountPercent) : '?';
-            const resultHtml = `
-                <div class="result-area">
-                    <div class="result-label">💰 优惠后到手价</div>
-                    <div class="result-value">¥ ${finalFormatted}</div>
-                    <div class="discount-saved">
-                        <span>🎉 共优惠金额</span>
-                        <span class="saved-amount">¥ ${savedFormatted}</span>
-                    </div>
-                    <div style="font-size:0.7rem; margin-top:8px; color:#407090;">
-                        原价 ¥ ${formatMoney(originalPrice)} &nbsp;→&nbsp; 到手 ¥ ${finalFormatted}
-                    </div>
-                </div>
-                <div class="info-note">
-                    💡 计算公式：原价 × (1 - 折扣%) = 到手价 <br>
-                    立减 ${discPercent}% · 省了 ¥ ${savedFormatted}
-                </div>
-            `;
-            resultContainer.innerHTML = resultHtml;
-        } 
-        else if (mode === 'mode2') {
-            const originalFormatted = formatMoney(originalPrice);
-            const savedFormatted = formatMoney(savedAmount);
-            const discPercent = (discountPercent !== null && discountPercent !== undefined) ? formatPercent(discountPercent) : '?';
-            const resultHtml = `
-                <div class="result-area">
-                    <div class="result-label">🏷️ 商品原价</div>
-                    <div class="result-value">¥ ${originalFormatted}</div>
-                    <div class="discount-saved">
-                        <span>🎉 共优惠金额</span>
-                        <span class="saved-amount">¥ ${savedFormatted}</span>
-                    </div>
-                    <div style="font-size:0.7rem; margin-top:8px; color:#407090;">
-                        原价 ¥ ${originalFormatted} &nbsp;→&nbsp; 到手 ¥ ${formatMoney(finalPrice)}
-                    </div>
-                </div>
-                <div class="info-note">
-                    💡 计算公式：到手价 ÷ (1 - 折扣%) = 原价 <br>
-                    立减 ${discPercent}% · 省了 ¥ ${savedFormatted}
-                </div>
-            `;
-            resultContainer.innerHTML = resultHtml;
-        }
-        else if (mode === 'mode3') {
-            // 核心展示：实际折扣百分比 + 优惠金额
-            const discPercentFormatted = formatPercent(discountPercent);
-            const savedFormatted = formatMoney(savedAmount);
-            const originalFormatted = formatMoney(originalPrice);
-            const finalFormatted = formatMoney(finalPrice);
-            const resultHtml = `
-                <div class="result-area">
-                    <div class="result-label">🎯 实际立减折扣</div>
-                    <div class="result-value">${discPercentFormatted}%</div>
-                    <div class="discount-saved">
-                        <span>💸 共优惠金额</span>
-                        <span class="saved-amount">¥ ${savedFormatted}</span>
-                    </div>
-                    <div style="font-size:0.75rem; margin-top:8px; background: #e9eff8; padding: 5px 12px; border-radius: 30px; display: inline-block; width: auto; margin-left: auto; margin-right: auto;">
-                        原价 ¥ ${originalFormatted} → 到手 ¥ ${finalFormatted}
-                    </div>
-                </div>
-                <div class="info-note">
-                    📐 折扣计算公式： (原价 - 到手价) ÷ 原价 × 100% = ${discPercentFormatted}% <br>
-                    🎁 你节省了 ¥ ${savedFormatted}，相当于打了 ${(100 - discountPercent).toFixed(1)} 折
-                </div>
-            `;
-            resultContainer.innerHTML = resultHtml;
-        }
-    }
-    
-    // 简单防XSS
-    function escapeHtml(str) {
-        if (!str) return '';
-        return String(str).replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-    
-    // Tab 点击处理 (外部绑定)
+    // Tab 切换逻辑
     function handleTabClick(e) {
         const btn = e.currentTarget;
         const mode = btn.getAttribute('data-mode');
-        if (mode === 'mode1') {
-            currentMode = 'mode1';
-        } else if (mode === 'mode2') {
-            currentMode = 'mode2';
-        } else if (mode === 'mode3') {
-            currentMode = 'mode3';
-        }
+        if (mode === 'mode1') currentMode = 'mode1';
+        else if (mode === 'mode2') currentMode = 'mode2';
+        else if (mode === 'mode3') currentMode = 'mode3';
+        
         // 更新tab按钮样式
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        // 重新渲染对应模式的界面（完全清空输入框）
+        
+        // 重新渲染界面（清空所有输入状态）
         render();
     }
     
-    // 绑定tab事件（因为tab-bar一直存在不会被重绘，只需绑定一次）
     function bindTabEvents() {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(btn => {
@@ -690,7 +812,6 @@
         });
     }
     
-    // 设置默认高亮（根据currentMode）
     function setDefaultActiveTab() {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(btn => {
@@ -705,14 +826,12 @@
         });
     }
     
-    // 初始化
     function init() {
-        render();              // 渲染当前模式界面
-        bindTabEvents();      // 绑定选项卡切换
-        setDefaultActiveTab(); // 高亮当前模式按钮
+        render();               
+        bindTabEvents();      
+        setDefaultActiveTab(); 
     }
     
-    // 页面启动
     window.addEventListener('DOMContentLoaded', () => {
         init();
     });
