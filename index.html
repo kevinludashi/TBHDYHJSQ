@@ -70,15 +70,15 @@
         }
 
         .content {
-            padding: 0.9rem 1rem 0.8rem;
+            padding: 0.9rem 1rem 0.9rem;
         }
 
-        /* 置顶结果区 */
-        .result-top-area {
+        /* 置顶结果区 - 现在用于键盘下方显示结果 (样式重命名但保持类名) */
+        .result-bottom-area {
             background: linear-gradient(135deg, #eef3ff 0%, #e4eefb 100%);
             border-radius: 1.4rem;
             padding: 0.7rem 1rem;
-            margin-bottom: 1rem;
+            margin-top: 0.8rem;
             border: 1px solid rgba(255,255,255,0.6);
         }
 
@@ -174,7 +174,6 @@
             gap: 0.4rem;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 0.2rem;
             margin-bottom: 0.6rem;
         }
 
@@ -232,7 +231,7 @@
             color: #c25a2c;
         }
 
-        /* 结果内部样式 */
+        /* 结果内部样式 (展示在键盘下方) */
         .result-label {
             font-size: 0.68rem;
             text-transform: uppercase;
@@ -302,9 +301,9 @@
             font-size: 0.6rem;
             text-align: center;
             color: #8f9bb3;
-            padding: 0.6rem 0 0.6rem;
+            padding: 0.6rem 0 0.3rem;
             border-top: 1px solid #eef2f8;
-            margin-top: 0.2rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -317,9 +316,9 @@
     </div>
 
     <div class="content" id="appContent">
-        <!-- 动态内容：结果区 + 输入行 + 归零按钮 + 自定义键盘 -->
+        <!-- 动态内容：输入行 + 归零按钮 + 固定键盘 + 结果区（位于键盘下方） -->
     </div>
-    <footer>自动计算 · 固定数字键盘（手机无系统键盘）</footer>
+    <footer>自动计算 · 固定数字键盘（手机无系统键盘）· 结果显示于键盘下方</footer>
 </div>
 
 <script>
@@ -402,28 +401,28 @@
         return result;
     }
 
-    // 展示结果到顶部区域
-    function displayResultToTop(result, mode) {
-        const topContainer = document.getElementById('topResultContainer');
-        if (!topContainer) return;
+    // 展示结果到位于键盘下方的结果区域 (容器 id: resultBottomContainer)
+    function displayResultToBottom(result, mode) {
+        const bottomContainer = document.getElementById('resultBottomContainer');
+        if (!bottomContainer) return;
         if (result && result.error) {
-            topContainer.innerHTML = `<div class="error-msg">⚠️ ${escapeHtml(result.error)}</div>`;
+            bottomContainer.innerHTML = `<div class="error-msg">⚠️ ${escapeHtml(result.error)}</div>`;
             return;
         }
         if (!result || result.original === null || result.final === null) {
-            topContainer.innerHTML = `<div class="neutral-tip">✨ 输入数字，自动计算优惠金额与折扣</div>`;
+            bottomContainer.innerHTML = `<div class="neutral-tip">✨ 输入数字，自动计算优惠金额与折扣</div>`;
             return;
         }
         const originalPrice = result.original, finalPrice = result.final, savedAmount = result.saved, discountPercent = result.discountPercent;
         if (mode === 'mode1') {
-            topContainer.innerHTML = `
+            bottomContainer.innerHTML = `
                 <div><div class="result-label">💰 优惠后到手价</div>
                 <div class="result-value">¥ ${formatMoney(finalPrice)}</div>
                 <div class="discount-saved"><span>🎉 共优惠金额</span><span class="saved-amount">¥ ${formatMoney(savedAmount)}</span></div>
                 <div style="font-size:0.7rem; margin-top:6px;">原价 ¥ ${formatMoney(originalPrice)} → 到手 ¥ ${formatMoney(finalPrice)}</div>
                 <div class="info-note">💡 立减 ${formatPercent(discountPercent)}% · 省了 ¥ ${formatMoney(savedAmount)}</div></div>`;
         } else if (mode === 'mode2') {
-            topContainer.innerHTML = `
+            bottomContainer.innerHTML = `
                 <div><div class="result-label">🏷️ 商品原价 (折前)</div>
                 <div class="result-value">¥ ${formatMoney(originalPrice)}</div>
                 <div class="discount-saved"><span>🎉 共优惠金额</span><span class="saved-amount">¥ ${formatMoney(savedAmount)}</span></div>
@@ -431,7 +430,7 @@
                 <div class="info-note">💡 立减 ${formatPercent(discountPercent)}% · 省了 ¥ ${formatMoney(savedAmount)}</div></div>`;
         } else if (mode === 'mode3') {
             const finalDiscount = (100 - discountPercent).toFixed(1);
-            topContainer.innerHTML = `
+            bottomContainer.innerHTML = `
                 <div><div class="result-label">🎯 实际立减折扣</div>
                 <div class="result-value">${formatPercent(discountPercent)}%</div>
                 <div class="discount-saved"><span>💸 共优惠金额</span><span class="saved-amount">¥ ${formatMoney(savedAmount)}</span></div>
@@ -440,7 +439,7 @@
         }
     }
 
-    // 自动计算入口
+    // 自动计算入口 (更新底部结果区)
     function performAutoCalculation() {
         let resultObj = null;
         let hasValidInput = false;
@@ -471,15 +470,15 @@
         }
         if (!resultObj) return;
         if (!hasValidInput && (!resultObj.error)) {
-            const top = document.getElementById('topResultContainer');
-            if (top) top.innerHTML = `<div class="neutral-tip">📝 请输入完整信息，自动计算优惠结果</div>`;
+            const bottom = document.getElementById('resultBottomContainer');
+            if (bottom) bottom.innerHTML = `<div class="neutral-tip">📝 请输入完整信息，自动计算优惠结果</div>`;
             return;
         }
-        if (resultObj.error) displayResultToTop(resultObj, currentMode);
-        else if (resultObj.original !== null && resultObj.final !== null) displayResultToTop(resultObj, currentMode);
+        if (resultObj.error) displayResultToBottom(resultObj, currentMode);
+        else if (resultObj.original !== null && resultObj.final !== null) displayResultToBottom(resultObj, currentMode);
         else {
-            const top = document.getElementById('topResultContainer');
-            if (top) top.innerHTML = `<div class="neutral-tip">✨ 输入数字，自动计算</div>`;
+            const bottom = document.getElementById('resultBottomContainer');
+            if (bottom) bottom.innerHTML = `<div class="neutral-tip">✨ 输入数字，自动计算</div>`;
         }
     }
 
@@ -501,65 +500,51 @@
             if (input1) input1.value = '';
             if (input2) input2.value = '';
         }
-        // 清空后重新计算
         performAutoCalculation();
-        // 保持活跃聚焦不清除
     }
 
     // 数字键盘操作：向当前活动输入框添加/删除内容
     function handleKeyboardInput(value) {
         if (!activeInputElement) {
-            // 无聚焦，轻提示无效果但是不报错，用户可以先点击输入框
             return;
         }
         const input = activeInputElement;
         let currentVal = input.value;
         if (value === '⌫') {
-            // 删除最后一个字符
             input.value = currentVal.slice(0, -1);
         } else if (value === 'C') {
             input.value = '';
         } else if (value === '.') {
-            // 防止多个小数点
             if (currentVal.includes('.')) return;
             input.value = currentVal + '.';
         } else {
-            // 数字追加
             input.value = currentVal + value;
         }
-        // 触发input事件以自动计算
         input.dispatchEvent(new Event('input', { bubbles: true }));
         performAutoCalculation();
-        // 保持焦点
         input.focus();
     }
 
-    // 设置移动端readonly & 绑定聚焦/失焦捕获
+    // 设置输入框 readonly 和 聚焦管理
     function setupInputFocusManagement() {
-        // 获取当前所有输入框
         const inputs = document.querySelectorAll('.input-field');
         if (!inputs.length) return;
         const isMobileDevice = isMobile;
         inputs.forEach(input => {
-            // 先移除旧监听避免重复
             input.removeEventListener('focus', handleFocus);
             input.removeEventListener('blur', handleBlur);
-            // 移动端设置readonly，阻止系统键盘
             if (isMobileDevice) {
                 input.setAttribute('readonly', 'readonly');
             } else {
                 input.removeAttribute('readonly');
             }
-            // 添加聚焦与失焦
             input.addEventListener('focus', handleFocus);
             input.addEventListener('blur', handleBlur);
         });
-        // 如果没有活跃元素且存在任一输入框，默认可以选第一个？不自动，等用户点击。
     }
 
     function handleFocus(e) {
         activeInputElement = e.target;
-        // 可选添加高亮样式
         if (activeInputElement) {
             document.querySelectorAll('.input-wrapper').forEach(w => w.style.borderColor = '#e2e9f2');
             const parentWrapper = activeInputElement.closest('.input-wrapper');
@@ -567,13 +552,10 @@
         }
     }
     function handleBlur(e) {
-        // 不清空activeInputElement? 为了仍然可以物理键盘键入时保留最后聚焦，但是PC上失去焦点后，键盘按钮应失效？推荐保留最后聚焦元素，但其他输入框获得焦点会覆盖。
-        // 由于每次focus都会更新activeInputElement，blur时不立即设为null，能让键盘按钮继续在失去焦点后对最后一个输入框操作(违背直觉但友好)
-        // 但一般用户习惯于点击新输入框后再输入，所以保留也无大碍; 但为了防止误操作，可以在延迟后置空？但为了方便，若没有任何焦点时键盘无效。我们这样做: 失去焦点时不清空，但下次点击其他输入框focus会更新。
-        // 没问题。
+        // 保留activeInputElement以便键盘仍然可以对最后操作的输入框生效，但用户再次点击其他输入框时会更新
     }
 
-    // 绑定键盘按钮事件 (每次render后)
+    // 绑定数字键盘按钮事件
     function bindKeyboardEvents() {
         const keys = document.querySelectorAll('.key-btn');
         keys.forEach(btn => {
@@ -584,7 +566,6 @@
                 const val = newBtn.getAttribute('data-key');
                 if (val) handleKeyboardInput(val);
             });
-            // 移动端touch避免页面缩放
             newBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 const val = newBtn.getAttribute('data-key');
@@ -593,7 +574,7 @@
         });
     }
 
-    // 绑定归零按钮事件
+    // 归零按钮事件
     function bindResetEvent() {
         const resetBtn = document.getElementById('resetButtonGlobal');
         if (resetBtn) {
@@ -606,7 +587,7 @@
         }
     }
 
-    // 为输入框绑定自动计算(原有input事件)
+    // 为输入框绑定自动计算( input 事件 )
     function bindAutoInputEvents() {
         if (currentMode === 'mode1') {
             const origEl = document.getElementById('originalInput');
@@ -631,7 +612,7 @@
         return String(str).replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
     }
 
-    // 渲染整体界面 (包含键盘)
+    // 渲染整体界面 (输入行 + 归零按钮 + 固定键盘 + 结果区置于键盘下方)
     function render() {
         let inputRowHtml = '';
         if (currentMode === 'mode1') {
@@ -681,28 +662,24 @@
             </div>
         `;
 
+        // 结果容器（将位于键盘下方）
+        const resultBottomHtml = `<div id="resultBottomContainer" class="result-bottom-area"><div class="neutral-tip">✨ 输入数字，自动计算优惠金额与折扣</div></div>`;
+
         const fullHtml = `
-            <div id="topResultContainer" class="result-top-area">
-                <div class="neutral-tip">✨ 输入数字，自动计算优惠金额与折扣</div>
-            </div>
             ${inputRowHtml}
             <button id="resetButtonGlobal" class="reset-btn">🔄 一键归零 / 清空所有</button>
             ${keyboardHtml}
+            ${resultBottomHtml}
         `;
         contentContainer.innerHTML = fullHtml;
-        // 绑定输入自动计算
         bindAutoInputEvents();
-        // 设置移动端属性及焦点管理
         setupInputFocusManagement();
-        // 绑定归零按钮
         bindResetEvent();
-        // 绑定数字键盘事件
         bindKeyboardEvents();
-        // 初始计算展示提示
         performAutoCalculation();
     }
 
-    // Tab切换
+    // Tab切换逻辑
     function handleTabClick(e) {
         const btn = e.currentTarget;
         const mode = btn.getAttribute('data-mode');
@@ -712,7 +689,7 @@
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeInputElement = null; // 重置聚焦元素
+        activeInputElement = null;
         render();
     }
 
